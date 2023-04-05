@@ -58,25 +58,20 @@ ORDER BY actors_listed DESC;
 # List the customers alphabetically by last name.
 SELECT first_name, last_name, SUM(amount) AS total_paid FROM payment
 JOIN customer USING(customer_id)
-GROUP BY first_name, last_name
+GROUP BY customer_id
 ORDER BY last_name, total_paid;
 
 #9 Write sql statement to check if you can find any actor who never particiapted in any film.
-SELECT actor_id FROM actor
-JOIN film_actor USING(actor_id)
-WHERE film_id IS NULL; # here not sure which one, but intuition tells me its film_id 
-#not actor_id as inner join would only result in the actors that have been in the movies
+SELECT ac.first_name, ac.last_name, fa.film_id FROM actor AS ac
+LEFT JOIN film_actor AS fa 
+ON ac.actor_id = fa.actor_id
+WHERE fa.film_id IS NULL; 
 
 #10 get the addresses that have NO customers, and ends with the letter "e"
--- SELECT address, address2 FROM customer
--- JOIN address USING(address_id)
--- WHERE address LIKE '%e' AND address2 IS NULL;
-
--- SELECT address FROM address
--- LEFT JOIN customer
--- ON address.address_id = customer.address_id
--- WHERE address2 IS NULL AND address LIKE "%e";
-
+SELECT address FROM address
+LEFT JOIN customer
+ON address.address_id = customer.address_id
+WHERE address IS NULL AND address LIKE "%e";
 
 # OPTIONAL
 
